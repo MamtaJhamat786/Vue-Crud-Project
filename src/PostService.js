@@ -1,12 +1,12 @@
 import axios from 'axios'
 
 const url = 'http://localhost:5000/api/posts/'
-class PostService{
+class PostService {
     // get post we make it static so taht i do not need to instatiate
-    static getPosts(){  
+    static getPosts() {
         // 
         return new Promise(async (resolve, reject) => {
-            try{
+            try {
                 const res = await axios.get(url);
                 const data = res.data;
                 resolve(
@@ -15,7 +15,7 @@ class PostService{
                         createdAt: new Date(post.createdAt)
                     }))
                 );
-            }catch(err){
+            } catch (err) {
                 reject(err);
 
             }
@@ -26,8 +26,8 @@ class PostService{
 
     // create post
 
-    static insertPost(firstName, lastName, email, telephone, hiredata){
-        return axios.post(url,{
+    static insertPost(firstName, lastName, email, telephone, hiredata) {
+        return axios.post(url, {
             firstName,
             lastName,
             email,
@@ -35,16 +35,28 @@ class PostService{
             hiredata
         });
     }
-    
-    // delete post
-    static deletePost(id){
-        return axios.delete(`${url}${id}`);
+
+    static updatePost(form) {
+        return axios.post(url + 'update/' + form.id, {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            email: form.email,
+            telephone: form.telephone,
+            hiredata: form.hiredata
+        });
+
     }
 
-    static deleteAll(){
+    // delete post
+    static deletePost(id) {
+
+        return axios.post(url + 'delete/' + id);
+    }
+
+    static deleteAll() {
         return axios.post("http://localhost:5000/api/posts/delete-all");
     }
-    
+
 }
 
 export default PostService

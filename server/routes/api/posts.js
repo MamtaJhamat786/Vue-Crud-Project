@@ -18,8 +18,8 @@ router.post('/', async(req, res) => {
         firstName :req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        telePhone : req.body.telephone, 
-        hireData : req.body.hiredata, 
+        telephone : req.body.telephone, 
+        hiredata : req.body.hiredata, 
         createdAt: new Date()
     });
     // console.log(req.body)
@@ -28,7 +28,7 @@ router.post('/', async(req, res) => {
 
 
 // Delete Posts
-router.delete('/:id', async (req,res) =>{
+router.post('/delete/:id', async (req,res) =>{
     const posts = await loadPostsCollection();
     await posts.deleteOne({_id: new mongodb.ObjectID(req.params.id)});
     res.status(200).send();
@@ -41,6 +41,24 @@ router.post('/delete-all', async (req, res) => {
     res.status(200).send();
 });
 
+// Update Posts
+router.post('/update/:id', async (req,res) =>{
+    const posts = await loadPostsCollection();
+    const newValues = {
+        $set: {
+        firstName :req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        telephone : req.body.telephone, 
+        hiredata : req.body.hiredata, 
+        createdAt: new Date()
+    }
+        
+    }
+    await posts.updateOne({_id: new mongodb.ObjectID(req.params.id)}, newValues)
+    res.status(200).send();
+
+});
 
 async function loadPostsCollection(){
     const client = await mongodb.MongoClient.connect(

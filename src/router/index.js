@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Add from '../views/Add.vue'
 import Tutorials from '../views/Tutorials.vue'
 import Edit from '../views/Edit.vue'
+import AddedSuccess from '../views/AddedSuccess'
 
 
 Vue.use(VueRouter)
@@ -14,6 +15,11 @@ const router = new VueRouter({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/added',
+      name: 'AddedSuccess',
+      component: AddedSuccess
     },
     {
       path: '/add',
@@ -29,7 +35,7 @@ const router = new VueRouter({
       ]
     },
     {
-      path:'/edit-tutorial',
+      path:'/edit-tutorial/:id',
       name: 'Edit',
       component: Edit
     }

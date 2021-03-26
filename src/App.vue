@@ -12,6 +12,9 @@ export default {
   components: {
     NavBar,
   },
+  created() {
+    this.$store.dispatch('initData')
+  }
  
 }
 </script>

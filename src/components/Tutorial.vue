@@ -5,8 +5,8 @@
     <p><strong>Last Name: </strong> {{ lastName }}</p>
     <p><strong>Email: </strong> {{ email }}</p>
     <p><strong>Telephone Number: </strong> {{ telephone }}</p>
-    <p><strong>HireData: </strong> {{ hiredata }}</p>
-   
+    <p><strong>Hiredata: </strong> {{ hiredata }}</p>
+    
 <b-button variant="warning" @click="editDatatss">Edit</b-button>
 </div>
   
@@ -20,7 +20,7 @@ export default {
         lastName:String,
         email: String,
         telephone: [String, Number],
-        hiredata: String,      
+        hiredata: String,   
     },
     methods: {
         editDatatss() {
@@ -33,7 +33,7 @@ export default {
                 hiredata: this.hiredata
             };
              this.$store.dispatch('editData', editDatas)
-             this.$router.push('/edit-tutorial')
+             this.$router.push('/edit-tutorial/' + this.id)
         }
     }
 }

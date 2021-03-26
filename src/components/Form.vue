@@ -54,23 +54,21 @@
             required
           ></b-form-input>
         </b-input-group>
+
         <b-button v-if="isEdit" variant="primary" class="mr-4 mt-5"
           >Publish</b-button
         >
-        <router-link v-if="isEdit" to="/tutorials">
-          <b-button variant="danger" class="mr-4 mt-5"
-            >Delete</b-button
-          ></router-link>
+          <b-button variant="danger" v-if="isEdit" class="mr-4 mt-5" @click="onDelete(form.id)" >Delete</b-button>
           
-        <b-button v-if="isEdit" variant="success" class="mt-5">Update</b-button>
+        <b-button v-if="isEdit" variant="success" @click="onUpdate()" class="mt-5">Update</b-button>
         
-        <b-button
+        <router-link to="/added"><b-button
           v-if="isAdd"
           variant="primary"
           class="mt-5"
           @click="onSubmit()"
           >Save</b-button
-        >
+        ></router-link>
       </b-form>
     </b-container>
   </div>
@@ -99,6 +97,18 @@ export default {
     };
   },
   methods: {
+    onDelete(id){
+        console.log()
+        PostService.deletePost(id);
+
+    },
+    onUpdate(){
+        
+        PostService.updatePost(this.form);
+        this.$store.dispatch("updatedPost", this.form)
+        this.$router.push('/tutorials')
+
+    },
     onSubmit() {
       const newTutorial = {
         id: Math.floor(Math.random() * 10000),
@@ -111,13 +121,7 @@ export default {
       //   passing this payload- newTutorial in store dipatch {action name is newtutorial},  payload- newTutorial
       this.$store.dispatch("newTutorial", newTutorial);
 
-      PostService.insertPost(
-        this.form.firstName,
-        this.form.lastName,
-        this.form.email,
-        this.form.telephone,
-        this.form.hiredata
-      );
+      PostService.insertPost(this.form.firstName,this.form.lastName,this.form.email, this.form.telephone, this.form.hiredata);
 
       console.log(newTutorial);
 

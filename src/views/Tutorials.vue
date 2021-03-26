@@ -4,10 +4,10 @@
     <b-container>
       <b-row class="mb-4 mt-4" >
         <b-col cols="7">
-          <b-form class="d-flex flex-row">
-            <b-form-input size="sm" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit" >Search</b-button
-            >
+          <b-form class="d-flex flex-row" @submit.prevent="searchSomething">
+            <b-form-input size="sm" placeholder="Search" :v-model="search"></b-form-input>
+            <!-- <b-button size="sm" class="my-2 my-sm-0" type="submit" >Search</b-button -->
+            
           </b-form>
         </b-col>
         <b-col>
@@ -34,8 +34,9 @@
             :first-name="tut.firstName"
             :last-name="tut.lastName"
             :email="tut.email"
-            :telephone="tut.telePhone"
-            :hiredata="tut.hireData"
+            :telephone="tut.telephone"
+            :hiredata="tut.hiredata"
+            :id="tut._id"
           />
 
           <p v-else>Please click on a tutorial... </p>
@@ -66,17 +67,26 @@ export default {
   },
   data() {
     return {
-      tutorials: [],
       error: "",
-      tut: {},  
+      tut: {}, 
+      search: ''
     };
   },
   //  here we are using getters from index.js
   // new tutorial is the name of the getter
   computed: {
-    ...mapGetters({
-      newTutorial: "newTutorial"
-    })
+    tutorials(){
+      return this.$store.getters.tutorials
+      var tutorials = [];
+      for (var i in this.tutorials){
+         var tutorial = this.tutorials[i];
+                    if(game.fi.toUpperCase().indexOf(this.keyword.toUpperCase()) !== -1 ||
+                        game.text.indexOf(this.keyword) !== -1) {
+                        games.push(game);
+                    }
+      }
+
+    }
   },
   methods: {
     passValue(value) {
@@ -85,30 +95,15 @@ export default {
     },
     deleteAll(){
       PostService.deleteAll();
-      this.PostService =  PostService.getPosts();
+      this.$store.dispatch('deleteAll')
     },
-  //   searchForValue(){
-  //     if(this.searchQuery){
-  //       var names =[]
-  //       for(var i in this.names) {
-  //         var name = this.names[i]
-  //         if (this.name.Tutorial.firstName.toUpperCase().indexOf(this.searchQuery.toUpperCase()) !== -1{
+    searchSomething(){
+      this.$store.dispatch('search', this.search);
 
-  //         }
 
-  //       }
-  //     }
+    },
 
-  //   }
-  // },
   },
-  async created() {
-    try {
-      this.tutorials = await PostService.getPosts();
-    } catch (err) {
-      this.error = err.message;
-    }
-  }
 };
 </script>
 
