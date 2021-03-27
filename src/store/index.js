@@ -9,7 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    tutorials: {},
+    tutorials: [],
     updatedData:{},
     search: ''
   },
@@ -36,9 +36,6 @@ export default new Vuex.Store({
         }
       });
       state.tutorials = array
-    },
-    search(state, payload){
-      state.search = payload
     }
 
     

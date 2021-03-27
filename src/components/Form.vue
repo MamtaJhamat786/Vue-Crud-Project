@@ -7,7 +7,7 @@
         style="max-width: 30rem"
       >
         <slot name="heading"> </slot>
-        <b-input-group class="mt-5">
+        <b-input-group class="mt-2">
           <label class="mr-5">First Name</label>
           <b-form-input
             placeholder="John"
@@ -46,26 +46,28 @@
         </b-input-group>
 
         <b-input-group class="mt-3">
-          <label class="mr-5">Hire Data</label>
-          <b-form-input
-            placeholder="5th feb "
-            type="text"
-            v-model="form.hiredata"
-            required
-          ></b-form-input>
-        </b-input-group>
-
-        <b-button v-if="isEdit" variant="primary" class="mr-4 mt-5"
-          >Publish</b-button
-        >
-          <b-button variant="danger" v-if="isEdit" class="mr-4 mt-5" @click="onDelete(form.id)" >Delete</b-button>
+          <label class="mr-5">Hire Date</label>
           
-        <b-button v-if="isEdit" variant="success" @click="onUpdate()" class="mt-5">Update</b-button>
+         <b-calendar v-model="form.hiredate" ></b-calendar>
+        </b-input-group>
+      
+      <p class="text-left mt-3" v-if="isEdit"><strong>Status: </strong>{{ form.published ? 'Published' : 'Pending' }}</p>
+    
+
+       <div >
+          <b-button v-if="isEdit" variant="primary" class="mr-4" @click="onUpdate(form.published ? false : true)"
+          >{{ form.published ? 'UnPublish' : 'Publish' }}</b-button
+        >
+          <b-button variant="danger" v-if="isEdit" class="mr-4" @click="onDelete(form.id)" >Delete</b-button>
+          
+        <b-button v-if="isEdit" variant="success" @click="onUpdate(false), updated=true">Update</b-button>
+       </div>
+        <p v-if="updated" class="mt-5"> The information was updated successfully</p>
         
         <router-link to="/added"><b-button
           v-if="isAdd"
           variant="primary"
-          class="mt-5"
+          class="mt-3"
           @click="onSubmit()"
           >Save</b-button
         ></router-link>
@@ -92,8 +94,12 @@ export default {
             lastName: "",
             email: "",
             telephone: "",
-            hiredata: ""
-          }
+            hiredate: new Date(),
+            published: true
+          },
+
+        updated : false
+
     };
   },
   methods: {
@@ -102,26 +108,29 @@ export default {
         PostService.deletePost(id);
 
     },
-    onUpdate(){
+    onUpdate(value){
         
-        PostService.updatePost(this.form);
-        this.$store.dispatch("updatedPost", this.form)
-        this.$router.push('/tutorials')
+      let form = this.form
+      form.published = value
+        PostService.updatePost(form);
+        this.$store.dispatch("updatedPost", form)
+        
 
     },
     onSubmit() {
       const newTutorial = {
-        id: Math.floor(Math.random() * 10000),
+        // id: Math.floor(Math.random() * 10000),
         firstName: this.form.firstName,
         lastName: this.form.lastName,
         email: this.form.email,
         telephone: this.form.telephone,
-        hiredata: this.form.hiredata
+        hiredate: this.form.hiredate,
+        published: this.form.published
       };
       //   passing this payload- newTutorial in store dipatch {action name is newtutorial},  payload- newTutorial
       this.$store.dispatch("newTutorial", newTutorial);
 
-      PostService.insertPost(this.form.firstName,this.form.lastName,this.form.email, this.form.telephone, this.form.hiredata);
+      PostService.insertPost(this.form.firstName,this.form.lastName,this.form.email, this.form.telephone, this.form.hiredate, this.form.published);
 
       console.log(newTutorial);
 
@@ -129,7 +138,7 @@ export default {
       this.form.lastName = "";
       this.form.email = "";
       this.form.telephone = "";
-      this.form.hiredata = "";
+      this.form.hiredate = "";
     }
   }
 };

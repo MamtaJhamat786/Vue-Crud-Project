@@ -26,13 +26,14 @@ class PostService {
 
     // create post
 
-    static insertPost(firstName, lastName, email, telephone, hiredata) {
+    static insertPost(firstName, lastName, email, telephone, hiredate, published) {
         return axios.post(url, {
             firstName,
             lastName,
             email,
             telephone,
-            hiredata
+            hiredate,
+            published
         });
     }
 
@@ -42,7 +43,8 @@ class PostService {
             lastName: form.lastName,
             email: form.email,
             telephone: form.telephone,
-            hiredata: form.hiredata
+            hiredate: form.hiredate,
+            published: form.published
         });
 
     }
@@ -52,6 +54,8 @@ class PostService {
 
         return axios.post(url + 'delete/' + id);
     }
+
+    // update post and publish
 
     static deleteAll() {
         return axios.post("http://localhost:5000/api/posts/delete-all");

@@ -19,8 +19,9 @@ router.post('/', async(req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         telephone : req.body.telephone, 
-        hiredata : req.body.hiredata, 
-        createdAt: new Date()
+        hiredate : req.body.hiredate, 
+        createdAt: new Date(),
+        published: req.body.published
     });
     // console.log(req.body)
     res.status(201).send();
@@ -50,8 +51,9 @@ router.post('/update/:id', async (req,res) =>{
         lastName: req.body.lastName,
         email: req.body.email,
         telephone : req.body.telephone, 
-        hiredata : req.body.hiredata, 
-        createdAt: new Date()
+        hiredate : req.body.hiredate, 
+        createdAt: new Date(),
+        published: req.body.published
     }
         
     }
@@ -59,6 +61,8 @@ router.post('/update/:id', async (req,res) =>{
     res.status(200).send();
 
 });
+
+
 
 async function loadPostsCollection(){
     const client = await mongodb.MongoClient.connect(

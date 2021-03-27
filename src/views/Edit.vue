@@ -1,7 +1,7 @@
 <template>
   <edit-form isEdit :edit-data="editData">
     <template v-slot:heading>
-      <h1>Update tutor info</h1>
+      <h1 class="mt-2 mb-2">Update tutor info</h1>
     </template>
   
   </edit-form>
